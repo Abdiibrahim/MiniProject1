@@ -8,14 +8,13 @@ import matplotlib.pyplot as plt
 
 personalChar = ctrl.Antecedent(np.arange(0, 11, 1), 'personalChar')
 ageDiff = ctrl.Antecedent(np.arange(0, 101, 1), 'ageDiff')
-education = ctrl.Antecedent(np.arange(0, 11, 1), 'education')
+educationDiff = ctrl.Antecedent(np.arange(0, 3, 1), 'educationDiff')
 
 marriage = ctrl.Consequent(np.arange(0, 101, 1), 'marriage')
 
 # Auto-membership function population is possible with .automf(3, 5, or 7)
 personalChar.automf(3)
-education.automf(3)
-ageDiff.automf(3)
+educationDiff.automf(3)
 
 # Custom membership functions can be built interactively with a familiar,
 # Pythonic API
@@ -36,15 +35,20 @@ rule2A = ctrl.Rule(ageDiff['low'], marriage['high'])
 rule2B = ctrl.Rule(ageDiff['medium'], marriage['medium'])
 rule2C = ctrl.Rule(ageDiff['high'], marriage['low'])
 
+rule3A = ctrl.Rule(educationDiff['poor'], marriage['low'])
+rule3B = ctrl.Rule(educationDiff['average'], marriage['medium'])
+rule3C = ctrl.Rule(educationDiff['good'], marriage['high'])
+
 # create control system
-marriage_ctrl = ctrl.ControlSystem([rule1A, rule1B, rule1C, rule2A, rule2B, rule2C])
+marriage_ctrl = ctrl.ControlSystem([rule1A, rule1B, rule1C, rule2A, rule2B, rule2C, rule3A, rule3B, rule3C])
 marriage_sim = ctrl.ControlSystemSimulation(marriage_ctrl)
 
 # Pass inputs to the ControlSystem using Antecedent labels with Pythonic API
 # Note: if you like passing many inputs at once, use .inputs(dict_of_data)
 
-marriage_sim.input['personalChar'] = 7.5
-marriage_sim.input['ageDiff'] = 0
+marriage_sim.input['personalChar'] = 5.5
+marriage_sim.input['ageDiff'] = 5
+marriage_sim.input['educationDiff'] = 1
 
 # Crunch the numbers and view result
 marriage_sim.compute()
