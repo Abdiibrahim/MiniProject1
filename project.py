@@ -19,9 +19,9 @@ ageDiff.automf(3)
 
 # Custom membership functions can be built interactively with a familiar,
 # Pythonic API
-marriage['low'] = fuzz.trimf(marriage.universe, [0, 0, 33])
-marriage['medium'] = fuzz.trimf(marriage.universe, [0, 33, 67])
-marriage['high'] = fuzz.trimf(marriage.universe, [33, 100, 100])
+marriage['low'] = fuzz.trimf(marriage.universe, [0, 0, 30])
+marriage['medium'] = fuzz.trimf(marriage.universe, [20, 45, 70])
+marriage['high'] = fuzz.trimf(marriage.universe, [60, 100, 100])
 
 ageDiff['low'] = fuzz.trimf(ageDiff.universe, [0, 0, 5])
 ageDiff['medium'] = fuzz.trimf(ageDiff.universe, [5, 7.5, 10])
