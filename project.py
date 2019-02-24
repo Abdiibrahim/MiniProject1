@@ -6,36 +6,48 @@ import matplotlib.pyplot as plt
 # New Antecedent/Consequent objects hold universe variables and membership
 # functions
 
-quality = ctrl.Antecedent(np.arange(0, 11, 1), 'quality')
-service = ctrl.Antecedent(np.arange(0, 11, 1), 'service')
-tip = ctrl.Consequent(np.arange(0, 26, 1), 'tip')
+personalChar = ctrl.Antecedent(np.arange(0, 11, 1), 'personalChar')
+ageDiff = ctrl.Antecedent(np.arange(0, 101, 1), 'ageDiff')
+education = ctrl.Antecedent(np.arange(0, 11, 1), 'education')
+
+marriage = ctrl.Consequent(np.arange(0, 101, 1), 'marriage')
 
 # Auto-membership function population is possible with .automf(3, 5, or 7)
-quality.automf(3)
-service.automf(3)
+personalChar.automf(3)
+education.automf(3)
+ageDiff.automf(3)
 
 # Custom membership functions can be built interactively with a familiar,
 # Pythonic API
-tip['low'] = fuzz.trimf(tip.universe, [0, 0, 13])
-tip['medium'] = fuzz.trimf(tip.universe, [0, 13, 25])
-tip['high'] = fuzz.trimf(tip.universe, [13, 25, 25])
+marriage['low'] = fuzz.trimf(marriage.universe, [0, 0, 33])
+marriage['medium'] = fuzz.trimf(marriage.universe, [0, 33, 67])
+marriage['high'] = fuzz.trimf(marriage.universe, [33, 100, 100])
+
+ageDiff['low'] = fuzz.trimf(ageDiff.universe, [0, 0, 5])
+ageDiff['medium'] = fuzz.trimf(ageDiff.universe, [5, 7.5, 10])
+ageDiff['high'] = fuzz.trimf(ageDiff.universe, [10, 100, 100])
 
 # Add fuzzy rules (to be changed)
-rule1 = ctrl.Rule(quality['poor'] | service['poor'], tip['low'])
-rule2 = ctrl.Rule(service['average'], tip['medium'])
-rule3 = ctrl.Rule(service['good'] | quality['good'], tip['high'])
+rule1A = ctrl.Rule(personalChar['good'], marriage['high'])
+rule1B = ctrl.Rule(personalChar['average'], marriage['medium'])
+rule1C = ctrl.Rule(personalChar['poor'], marriage['low'])
+
+rule2A = ctrl.Rule(ageDiff['low'], marriage['high'])
+rule2B = ctrl.Rule(ageDiff['medium'], marriage['medium'])
+rule2C = ctrl.Rule(ageDiff['high'], marriage['low'])
 
 # create control system
-tippling_ctrl = ctrl.ControlSystem([rule1, rule2, rule3])
-tipping = ctrl.ControlSystemSimulation(tippling_ctrl)
+marriage_ctrl = ctrl.ControlSystem([rule1A, rule1B, rule1C, rule2A, rule2B, rule2C])
+marriage_sim = ctrl.ControlSystemSimulation(marriage_ctrl)
 
 # Pass inputs to the ControlSystem using Antecedent labels with Pythonic API
 # Note: if you like passing many inputs at once, use .inputs(dict_of_data)
-tipping.input['quality'] = 6.5
-tipping.input['service'] = 9.8
+
+marriage_sim.input['personalChar'] = 7.5
+marriage_sim.input['ageDiff'] = 0
 
 # Crunch the numbers and view result
-tipping.compute()
-print(tipping.output['tip'])
-tip.view(sim=tipping)
+marriage_sim.compute()
+print(marriage_sim.output['marriage'])
+marriage.view(sim=marriage_sim)
 plt.show()
