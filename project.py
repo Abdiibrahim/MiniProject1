@@ -3,8 +3,7 @@ import skfuzzy as fuzz
 from skfuzzy import control as ctrl
 import matplotlib.pyplot as plt
 
-# New Antecedent/Consequent objects hold universe variables and membership
-# functions
+# Antecedent/Consequent objects hold universe variables and membership functions
 personalChar = ctrl.Antecedent(np.arange(0, 11, 1), 'personalChar')  # 1
 ageDiff = ctrl.Antecedent(np.arange(0, 101, 1), 'ageDiff')  # 2
 educationLevelSim = ctrl.Antecedent(np.arange(0, 11, 1), 'educationLevelSim')  # 3
@@ -27,7 +26,7 @@ friendSupport = ctrl.Antecedent(np.arange(0, 11, 1), 'friendSupport')  # 17
 
 marriage = ctrl.Consequent(np.arange(0, 101, 1), 'marriage')
 
-# Auto-membership function population is possible with .automf(3, 5, or 7)
+# Auto-membership functions
 personalChar.automf(3)
 educationLevelSim.automf(3)
 educationFieldSim.automf(3)
@@ -47,8 +46,7 @@ politicalSim.automf(3)
 love.automf(3)
 friendSupport.automf(3)
 
-# Custom membership functions can be built interactively with a familiar,
-# Pythonic API
+# Custom membership functions, Pythonic API
 marriage['low'] = fuzz.trimf(marriage.universe, [0, 0, 30])
 marriage['medium'] = fuzz.trimf(marriage.universe, [20, 45, 70])
 marriage['high'] = fuzz.trimf(marriage.universe, [60, 100, 100])
@@ -153,9 +151,52 @@ marriage_ctrl = ctrl.ControlSystem(ruleSet)
 marriage_sim = ctrl.ControlSystemSimulation(marriage_ctrl)
 
 # Pass inputs to the ControlSystem using Antecedent labels with Pythonic API
-# Note: if you like passing many inputs at once, use .inputs(dict_of_data)
 dataSet1 = {
-    'personalChar': 6.7,
+    'personalChar': 0,
+    'ageDiff': 100,
+    'educationLevelSim': 0,
+    'educationFieldSim': 0,
+    'sexualAttraction': 0,
+    'incomeSim': 0,
+    'careerSim': 0,
+    'careerSat': 0,
+    'habitSim': 0,
+    'hobbySim': 0,
+    'adventureSim': 0,
+    'uniqueness': 0,
+    'childAgreement': 0,
+    'familySupport': 0,
+    'futurePlanSim': 0,
+    'religiousSim': 0,
+    'politicalSim': 0,
+    'love': 0,
+    'friendSupport': 0
+}
+
+dataSet2 = {
+    'personalChar': 10,
+    'ageDiff': 0,
+    'educationLevelSim': 10,
+    'educationFieldSim': 10,
+    'sexualAttraction': 10,
+    'incomeSim': 10,
+    'careerSim': 10,
+    'careerSat': 10,
+    'habitSim': 10,
+    'hobbySim': 10,
+    'adventureSim': 10,
+    'uniqueness': 10,
+    'childAgreement': 10,
+    'familySupport': 10,
+    'futurePlanSim': 10,
+    'religiousSim': 10,
+    'politicalSim': 10,
+    'love': 10,
+    'friendSupport': 10
+}
+
+dataSet3 = {
+    'personalChar': 7,
     'ageDiff': 3,
     'educationLevelSim': 7,
     'educationFieldSim': 5,
@@ -175,9 +216,54 @@ dataSet1 = {
     'love': 9,
     'friendSupport': 8
 }
-marriage_sim.inputs(dataSet1)
 
-# Crunch the numbers and view result
+dataSet4 = {
+    'personalChar': 8,
+    'ageDiff': 6,
+    'educationLevelSim': 9,
+    'educationFieldSim': 5,
+    'sexualAttraction': 9,
+    'incomeSim': 7,
+    'careerSim': 5,
+    'careerSat': 10,
+    'habitSim': 9,
+    'hobbySim': 7,
+    'adventureSim': 6,
+    'uniqueness': 7,
+    'childAgreement': 9,
+    'familySupport': 10,
+    'futurePlanSim': 10,
+    'religiousSim': 9,
+    'politicalSim': 8,
+    'love': 10,
+    'friendSupport': 9
+}
+
+dataSet5 = {
+    'personalChar': 5,
+    'ageDiff': 27,
+    'educationLevelSim': 4,
+    'educationFieldSim': 0,
+    'sexualAttraction': 10,
+    'incomeSim': 2,
+    'careerSim': 2,
+    'careerSat': 10,
+    'habitSim': 4,
+    'hobbySim': 5,
+    'adventureSim': 6,
+    'uniqueness': 4,
+    'childAgreement': 7,
+    'familySupport': 5,
+    'futurePlanSim': 6,
+    'religiousSim': 4,
+    'politicalSim': 7,
+    'love': 8,
+    'friendSupport': 4
+}
+
+marriage_sim.inputs(dataSet5)
+
+# Calculate and view result
 marriage_sim.compute()
 print(marriage_sim.output['marriage'])
 marriage.view(sim=marriage_sim)
